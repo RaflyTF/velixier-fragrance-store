@@ -165,65 +165,72 @@
 
           <!-- Order Summary -->
           <div class="lg:col-span-1">
-            <div class="bg-dark-lighter p-8 rounded-2xl border border-gray-800/30 sticky top-24">
-              <h3 class="text-2xl font-serif text-gold mb-6">Order Summary</h3>
+            <div class="bg-dark-lighter rounded-2xl border border-gold/30 lg:sticky lg:top-24">
+              <div class="bg-gradient-to-r from-gold/10 to-champagne/10 p-6 border-b border-gold/20">
+                <h3 class="text-2xl font-serif text-gold">Order Summary</h3>
+              </div>
               
-              <!-- Cart Items -->
-              <div class="space-y-4 mb-6 max-h-64 overflow-y-auto">
-                <div 
-                  v-for="item in cartItems" 
-                  :key="item.id"
-                  class="flex gap-3 pb-4 border-b border-gray-800/30"
+              <div class="p-6">
+                <!-- Cart Items - Only show 1 item with scroll -->
+                <div class="space-y-3 mb-6 overflow-y-auto custom-scrollbar pr-2" style="max-height: 120px;">
+                  <div 
+                    v-for="item in cartItems" 
+                    :key="item.id"
+                    class="flex gap-3 p-3 bg-dark/50 rounded-xl border border-gray-800/30 hover:border-gold/20 transition-colors"
+                  >
+                    <div class="w-12 h-12 bg-black rounded-lg overflow-hidden flex-shrink-0">
+                      <img 
+                        :src="item.image" 
+                        :alt="item.name" 
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-cream text-xs font-medium truncate mb-1">{{ item.name }}</p>
+                      <div class="flex items-center justify-between">
+                        <span class="text-cream/60 text-xs">Qty: {{ item.quantity }}</span>
+                        <span class="text-gold text-xs font-medium">{{ item.price }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Price Summary -->
+                <div class="space-y-3 mb-6 p-4 bg-dark/30 rounded-xl border border-gray-800/30">
+                  <div class="flex justify-between text-cream/70 text-sm">
+                    <span>Subtotal ({{ cartCount }} items)</span>
+                    <span class="text-cream">{{ formatPrice(cartTotal) }}</span>
+                  </div>
+                  <div class="flex justify-between text-cream/70 text-sm">
+                    <span>Shipping</span>
+                    <span class="text-cream">{{ formatPrice(50000) }}</span>
+                  </div>
+                  <div class="flex justify-between text-cream/70 text-sm">
+                    <span>Tax (10%)</span>
+                    <span class="text-cream">{{ formatPrice(cartTotal * 0.1) }}</span>
+                  </div>
+                  <div class="border-t border-gold/30 pt-3 mt-3 flex justify-between items-center">
+                    <span class="text-lg font-serif text-gold">Total</span>
+                    <span class="text-2xl font-serif text-gold">{{ formatPrice(totalAmount) }}</span>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <button 
+                  @click="handlePlaceOrder"
+                  :disabled="isProcessing"
+                  class="w-full bg-champagne hover:bg-gold text-dark py-4 rounded-2xl font-medium text-base mb-4 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gold/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  <div class="w-16 h-16 bg-black rounded-lg overflow-hidden flex-shrink-0 p-1">
-                    <img 
-                      :src="item.image" 
-                      :alt="item.name" 
-                      class="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <p class="text-cream text-sm font-medium truncate">{{ item.name }}</p>
-                    <p class="text-cream/60 text-xs">Qty: {{ item.quantity }}</p>
-                    <p class="text-cream/80 text-sm">{{ item.price }}</p>
-                  </div>
-                </div>
+                  {{ isProcessing ? 'Processing...' : 'Place Order' }}
+                </button>
+
+                <router-link 
+                  to="/cart"
+                  class="block w-full text-center bg-dark border border-gold/20 hover:border-gold/50 text-gold py-4 rounded-2xl font-normal text-base transition-all duration-300"
+                >
+                  Back to Cart
+                </router-link>
               </div>
-
-              <!-- Price Summary -->
-              <div class="space-y-3 mb-6">
-                <div class="flex justify-between text-cream/80">
-                  <span>Subtotal ({{ cartCount }} items)</span>
-                  <span>{{ formatPrice(cartTotal) }}</span>
-                </div>
-                <div class="flex justify-between text-cream/80">
-                  <span>Shipping</span>
-                  <span>{{ formatPrice(50000) }}</span>
-                </div>
-                <div class="flex justify-between text-cream/80">
-                  <span>Tax (10%)</span>
-                  <span>{{ formatPrice(cartTotal * 0.1) }}</span>
-                </div>
-                <div class="border-t border-gray-800 pt-3 flex justify-between text-xl font-normal text-gold">
-                  <span>Total</span>
-                  <span>{{ formatPrice(totalAmount) }}</span>
-                </div>
-              </div>
-
-              <button 
-                @click="handlePlaceOrder"
-                :disabled="isProcessing"
-                class="w-full bg-champagne hover:bg-gold text-dark py-4 rounded-2xl font-medium text-base mb-4 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-gold/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-              >
-                {{ isProcessing ? 'Processing...' : 'Place Order' }}
-              </button>
-
-              <router-link 
-                to="/cart"
-                class="block w-full text-center bg-dark border border-gold/20 hover:border-gold/50 text-gold py-4 rounded-2xl font-normal text-base transition-all duration-300"
-              >
-                Back to Cart
-              </router-link>
             </div>
           </div>
         </div>
@@ -425,3 +432,24 @@ if (cartItems.value.length === 0) {
   router.push('/cart')
 }
 </script>
+
+<style scoped>
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #c9a961;
+}
+</style>

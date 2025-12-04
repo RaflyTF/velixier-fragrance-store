@@ -2,12 +2,12 @@
   <div class="min-h-screen bg-black">
     <Navbar />
     
-    <main class="py-20 px-6 min-h-screen">
+    <main class="py-12 md:py-16 lg:py-20 px-4 md:px-6 min-h-screen">
       <div class="max-w-7xl mx-auto">
         <!-- Back Button -->
         <button 
           @click="$router.back()"
-          class="mb-8 flex items-center gap-2 text-gold hover:text-champagne transition-colors"
+          class="mb-6 md:mb-8 flex items-center gap-2 text-gold hover:text-champagne transition-colors text-sm md:text-base"
         >
           <i class="fas fa-arrow-left"></i>
           <span>Back to Products</span>
@@ -33,172 +33,175 @@
         </div>
 
         <!-- Product Detail -->
-        <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           <!-- Product Image -->
-          <div class="bg-dark-lighter rounded-3xl p-8 border border-gray-800/30 sticky top-24 self-start">
-            <div class="relative">
-              <!-- Badge -->
-              <div class="absolute top-0 left-0 z-10 bg-gold text-dark px-4 py-2 rounded-full text-sm font-medium">
-                <i class="fas fa-award mr-2"></i>{{ product.badge }}
-              </div>
+          <div class="bg-dark-lighter rounded-2xl md:rounded-3xl p-4 md:p-6 border border-gray-800/30 lg:sticky lg:top-24 lg:self-start">
+            <!-- Badge -->
+            <div class="absolute top-6 left-6 md:top-8 md:left-8 z-10 bg-gold text-dark px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium">
+              <i class="fas fa-award mr-1 md:mr-2"></i>{{ product.badge }}
+            </div>
 
-              <!-- Image -->
-              <div class="flex items-center justify-center h-96 lg:h-[500px]">
-                <img 
-                  :src="product.image" 
-                  :alt="product.name"
-                  class="max-w-full max-h-full object-contain"
-                />
+            <!-- Image Gallery Thumbnails - Moved to Top -->
+            <div class="flex gap-2 md:gap-3 mb-4 justify-center">
+              <div 
+                v-for="(img, index) in product.images" 
+                :key="index"
+                @click="selectedImage = img"
+                class="w-14 h-14 md:w-16 md:h-16 bg-black rounded-lg border-2 transition-all cursor-pointer overflow-hidden flex-shrink-0"
+                :class="selectedImage === img ? 'border-gold ring-2 ring-gold/50 scale-105' : 'border-gold/20 hover:border-gold/50'"
+              >
+                <img :src="img" :alt="`${product.name} view ${index + 1}`" class="w-full h-full object-cover" />
               </div>
             </div>
 
-            <!-- Image Gallery Thumbnails (Optional Enhancement) -->
-            <div class="flex gap-4 mt-6 justify-center">
-              <div 
-                v-for="i in 3" 
-                :key="i"
-                class="w-20 h-20 bg-black rounded-xl border border-gold/20 flex items-center justify-center cursor-pointer hover:border-gold/50 transition-colors"
-              >
-                <img :src="product.image" :alt="`${product.name} view ${i}`" class="max-w-full max-h-full object-contain p-2" />
-              </div>
+            <!-- Main Image with Fixed Height -->
+            <div class="relative bg-black rounded-xl overflow-hidden" style="height: 400px; max-height: 400px;">
+              <img 
+                :src="selectedImage" 
+                :alt="product.name"
+                class="w-full h-full object-contain transition-all duration-300"
+              />
             </div>
           </div>
 
           <!-- Product Info -->
           <div>
             <!-- Title & Category -->
-            <div class="mb-6">
-              <div class="flex items-center gap-3 mb-2">
-                <span class="text-champagne text-sm uppercase tracking-wider font-medium">
-                  <i class="fas fa-tag mr-2"></i>{{ product.category }}
+            <div class="mb-4 md:mb-6">
+              <div class="flex items-center gap-2 md:gap-3 mb-2">
+                <span class="text-champagne text-xs md:text-sm uppercase tracking-wider font-medium">
+                  <i class="fas fa-tag mr-1 md:mr-2"></i>{{ product.category }}
                 </span>
               </div>
-              <h1 class="text-4xl md:text-5xl font-serif text-gold mb-4">{{ product.name }}</h1>
+              <h1 class="text-3xl md:text-4xl lg:text-5xl font-serif text-gold mb-3 md:mb-4">{{ product.name }}</h1>
               
               <!-- Rating -->
-              <div class="flex items-center gap-3 mb-4">
+              <div class="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
                 <div class="flex items-center gap-1">
-                  <i v-for="i in 5" :key="i" class="fas fa-star text-sm" :class="i <= product.rating ? 'text-gold' : 'text-gray-600'"></i>
+                  <i v-for="i in 5" :key="i" class="fas fa-star text-xs md:text-sm" :class="i <= product.rating ? 'text-gold' : 'text-gray-600'"></i>
                 </div>
-                <span class="text-cream/70 text-sm">{{ product.rating }}.0 ({{ product.reviews }} reviews)</span>
+                <span class="text-cream/70 text-xs md:text-sm">{{ product.rating }}.0 ({{ product.reviews }} reviews)</span>
               </div>
             </div>
 
             <!-- Price -->
-            <div class="mb-8 p-6 bg-dark-lighter rounded-2xl border border-gold/20">
+            <div class="mb-6 md:mb-8 p-4 md:p-6 bg-dark-lighter rounded-xl md:rounded-2xl border border-gold/20">
               <div class="flex items-center justify-between">
-                <span class="text-cream/70 text-sm uppercase tracking-wider">Price</span>
-                <span class="text-3xl font-serif text-gold">{{ product.price }}</span>
+                <span class="text-cream/70 text-xs md:text-sm uppercase tracking-wider">Price</span>
+                <span class="text-2xl md:text-3xl font-serif text-gold">{{ product.price }}</span>
               </div>
             </div>
 
             <!-- Description -->
-            <div class="mb-8">
-              <h3 class="text-xl font-serif text-gold mb-3 flex items-center gap-2">
-                <i class="fas fa-info-circle"></i>
+            <div class="mb-6 md:mb-8">
+              <h3 class="text-lg md:text-xl font-serif text-gold mb-2 md:mb-3 flex items-center gap-2">
+                <i class="fas fa-info-circle text-sm md:text-base"></i>
                 Description
               </h3>
-              <p class="text-cream/70 leading-relaxed mb-4">{{ product.description }}</p>
-              <p class="text-cream/60 text-sm">
+              <p class="text-cream/70 leading-relaxed mb-3 md:mb-4 text-sm md:text-base">{{ product.description }}</p>
+              <p class="text-cream/60 text-xs md:text-sm">
                 This exquisite fragrance is crafted with the finest ingredients, designed to leave a lasting impression. 
                 Perfect for both day and evening wear, it combines sophistication with timeless elegance.
               </p>
             </div>
 
             <!-- Product Features -->
-            <div class="mb-8">
-              <h3 class="text-xl font-serif text-gold mb-4 flex items-center gap-2">
-                <i class="fas fa-list-check"></i>
+            <div class="mb-6 md:mb-8">
+              <h3 class="text-lg md:text-xl font-serif text-gold mb-3 md:mb-4 flex items-center gap-2">
+                <i class="fas fa-list-check text-sm md:text-base"></i>
                 Key Features
               </h3>
-              <div class="grid grid-cols-2 gap-4">
-                <div class="bg-dark-lighter p-4 rounded-xl border border-gray-800/30">
-                  <i class="fas fa-flask text-gold text-2xl mb-2"></i>
-                  <p class="text-cream text-sm font-medium">100ml Premium</p>
+              <div class="grid grid-cols-2 gap-3 md:gap-4">
+                <div class="bg-dark-lighter p-3 md:p-4 rounded-lg md:rounded-xl border border-gray-800/30">
+                  <i class="fas fa-flask text-gold text-xl md:text-2xl mb-1 md:mb-2"></i>
+                  <p class="text-cream text-xs md:text-sm font-medium">100ml Premium</p>
                   <p class="text-cream/60 text-xs">Eau de Parfum</p>
                 </div>
-                <div class="bg-dark-lighter p-4 rounded-xl border border-gray-800/30">
-                  <i class="fas fa-clock text-gold text-2xl mb-2"></i>
-                  <p class="text-cream text-sm font-medium">Long Lasting</p>
+                <div class="bg-dark-lighter p-3 md:p-4 rounded-lg md:rounded-xl border border-gray-800/30">
+                  <i class="fas fa-clock text-gold text-xl md:text-2xl mb-1 md:mb-2"></i>
+                  <p class="text-cream text-xs md:text-sm font-medium">Long Lasting</p>
                   <p class="text-cream/60 text-xs">8-12 Hours</p>
                 </div>
-                <div class="bg-dark-lighter p-4 rounded-xl border border-gray-800/30">
-                  <i class="fas fa-leaf text-gold text-2xl mb-2"></i>
-                  <p class="text-cream text-sm font-medium">Natural</p>
+                <div class="bg-dark-lighter p-3 md:p-4 rounded-lg md:rounded-xl border border-gray-800/30">
+                  <i class="fas fa-leaf text-gold text-xl md:text-2xl mb-1 md:mb-2"></i>
+                  <p class="text-cream text-xs md:text-sm font-medium">Natural</p>
                   <p class="text-cream/60 text-xs">Organic Ingredients</p>
                 </div>
-                <div class="bg-dark-lighter p-4 rounded-xl border border-gray-800/30">
-                  <i class="fas fa-certificate text-gold text-2xl mb-2"></i>
-                  <p class="text-cream text-sm font-medium">Authentic</p>
+                <div class="bg-dark-lighter p-3 md:p-4 rounded-lg md:rounded-xl border border-gray-800/30">
+                  <i class="fas fa-certificate text-gold text-xl md:text-2xl mb-1 md:mb-2"></i>
+                  <p class="text-cream text-xs md:text-sm font-medium">Authentic</p>
                   <p class="text-cream/60 text-xs">100% Original</p>
                 </div>
               </div>
             </div>
 
             <!-- Quantity Selector -->
-            <div class="mb-8">
-              <label class="text-cream text-sm mb-3 block flex items-center gap-2">
+            <div class="mb-6 md:mb-8">
+              <label class="text-cream text-xs md:text-sm mb-2 md:mb-3 block flex items-center gap-2">
                 <i class="fas fa-cart-plus"></i>
                 Quantity
               </label>
-              <div class="flex items-center gap-4">
+              <div class="flex items-center gap-3 md:gap-4">
                 <div class="flex items-center border border-gold/20 rounded-full overflow-hidden">
                   <button 
                     @click="decreaseQuantity"
-                    class="px-6 py-3 bg-dark-lighter hover:bg-gold hover:text-dark text-cream transition-colors"
+                    class="px-4 md:px-6 py-2.5 md:py-3 bg-dark-lighter hover:bg-gold hover:text-dark text-cream transition-colors text-sm md:text-base"
                     :disabled="quantity <= 1"
                   >
                     <i class="fas fa-minus"></i>
                   </button>
-                  <span class="px-8 py-3 bg-dark text-cream font-medium">{{ quantity }}</span>
+                  <span class="px-6 md:px-8 py-2.5 md:py-3 bg-dark text-cream font-medium text-sm md:text-base">{{ quantity }}</span>
                   <button 
                     @click="increaseQuantity"
-                    class="px-6 py-3 bg-dark-lighter hover:bg-gold hover:text-dark text-cream transition-colors"
+                    class="px-4 md:px-6 py-2.5 md:py-3 bg-dark-lighter hover:bg-gold hover:text-dark text-cream transition-colors text-sm md:text-base"
                   >
                     <i class="fas fa-plus"></i>
                   </button>
                 </div>
-                <span class="text-cream/60 text-sm">
-                  <i class="fas fa-box mr-2"></i>In Stock
+                <span class="text-cream/60 text-xs md:text-sm">
+                  <i class="fas fa-box mr-1 md:mr-2"></i>In Stock
                 </span>
               </div>
             </div>
 
             <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4 mb-8">
+            <div class="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6 md:mb-8">
               <button 
                 @click="handleAddToCart"
-                class="flex-1 bg-gold hover:bg-champagne text-dark py-4 rounded-full font-medium text-lg flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-lg hover:shadow-gold/20 hover:scale-105 active:scale-95"
+                class="flex-1 bg-gold hover:bg-champagne text-dark py-3 md:py-4 rounded-full font-medium text-base md:text-lg flex items-center justify-center gap-2 md:gap-3 transition-all duration-300 hover:shadow-lg hover:shadow-gold/20 hover:scale-105 active:scale-95"
               >
                 <i class="fas fa-shopping-cart"></i>
                 <span>Add to Cart</span>
               </button>
               <button 
-                class="sm:w-16 bg-dark-lighter hover:bg-gold hover:text-dark text-gold border border-gold/20 py-4 rounded-full transition-all duration-300 flex items-center justify-center"
+                @click="handleToggleWishlist"
+                class="sm:w-14 md:w-16 py-3 md:py-4 rounded-full transition-all duration-300 flex items-center justify-center border"
+                :class="isInWishlist(product.id) ? 'bg-red-500 text-white border-red-500' : 'bg-dark-lighter hover:bg-gold hover:text-dark text-gold border-gold/20'"
+                :title="isInWishlist(product.id) ? 'Remove from wishlist' : 'Add to wishlist'"
               >
-                <i class="fas fa-heart"></i>
+                <i :class="isInWishlist(product.id) ? 'fas fa-heart' : 'far fa-heart'"></i>
               </button>
             </div>
 
             <!-- Additional Info -->
-            <div class="border-t border-gray-800/30 pt-8">
-              <div class="space-y-4">
-                <div class="flex items-start gap-3">
-                  <i class="fas fa-truck text-gold mt-1"></i>
+            <div class="border-t border-gray-800/30 pt-6 md:pt-8">
+              <div class="space-y-3 md:space-y-4">
+                <div class="flex items-start gap-2 md:gap-3">
+                  <i class="fas fa-truck text-gold mt-0.5 md:mt-1 text-sm md:text-base"></i>
                   <div>
-                    <p class="text-cream font-medium">Free Shipping</p>
-                    <p class="text-cream/60 text-sm">On orders over Rp 1.000.000</p>
+                    <p class="text-cream font-medium text-sm md:text-base">Free Shipping</p>
+                    <p class="text-cream/60 text-xs md:text-sm">On orders over Rp 1.000.000</p>
                   </div>
                 </div>
-                <div class="flex items-start gap-3">
-                  <i class="fas fa-shield-alt text-gold mt-1"></i>
+                <div class="flex items-start gap-2 md:gap-3">
+                  <i class="fas fa-shield-alt text-gold mt-0.5 md:mt-1 text-sm md:text-base"></i>
                   <div>
-                    <p class="text-cream font-medium">Authentic Guarantee</p>
-                    <p class="text-cream/60 text-sm">100% original products</p>
+                    <p class="text-cream font-medium text-sm md:text-base">Authentic Guarantee</p>
+                    <p class="text-cream/60 text-xs md:text-sm">100% original products</p>
                   </div>
                 </div>
-                <div class="flex items-start gap-3">
-                  <i class="fas fa-undo text-gold mt-1"></i>
+                <div class="flex items-start gap-2 md:gap-3">
+                  <i class="fas fa-undo text-gold mt-0.5 md:mt-1 text-sm md:text-base"></i>
                   <div>
                     <p class="text-cream font-medium">Easy Returns</p>
                     <p class="text-cream/60 text-sm">30-day return policy</p>
@@ -210,29 +213,29 @@
         </div>
 
         <!-- Related Products -->
-        <div v-if="product && product !== 'not-found'" class="mt-20">
-          <h2 class="text-3xl font-serif text-gold mb-8 text-center flex items-center justify-center gap-3">
-            <i class="fas fa-sparkles"></i>
+        <div v-if="product && product !== 'not-found'" class="mt-12 md:mt-16 lg:mt-20">
+          <h2 class="text-2xl md:text-3xl font-serif text-gold mb-6 md:mb-8 text-center flex items-center justify-center gap-2 md:gap-3">
+            <i class="fas fa-sparkles text-lg md:text-xl"></i>
             You May Also Like
           </h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             <div 
               v-for="relatedProduct in relatedProducts" 
               :key="relatedProduct.id"
-              class="bg-dark-lighter rounded-2xl overflow-hidden border border-gray-800/30 hover:border-gold/30 transition-all duration-300 group cursor-pointer"
+              class="bg-dark-lighter rounded-xl md:rounded-2xl overflow-hidden border border-gray-800/30 hover:border-gold/30 transition-all duration-300 group cursor-pointer"
               @click="navigateToProduct(relatedProduct.id)"
             >
-              <div class="h-48 flex items-center justify-center bg-black p-4">
+              <div class="h-36 md:h-48 flex items-center justify-center bg-black p-3 md:p-4">
                 <img 
                   :src="relatedProduct.image" 
                   :alt="relatedProduct.name"
                   class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
-              <div class="p-4">
-                <h3 class="text-lg font-serif text-gold mb-2">{{ relatedProduct.name }}</h3>
+              <div class="p-3 md:p-4">
+                <h3 class="text-sm md:text-lg font-serif text-gold mb-1 md:mb-2 line-clamp-1">{{ relatedProduct.name }}</h3>
                 <div class="flex items-center justify-between">
-                  <span class="text-champagne font-medium">{{ relatedProduct.price }}</span>
+                  <span class="text-champagne font-medium text-xs md:text-base">{{ relatedProduct.price }}</span>
                   <div class="flex items-center gap-1">
                     <i class="fas fa-star text-gold text-xs"></i>
                     <span class="text-cream/60 text-xs">{{ relatedProduct.rating }}</span>
@@ -256,6 +259,7 @@ import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
 import LoadingSpinner from '../components/LoadingSpinner.vue'
 import { useCart } from '../stores/cart'
+import { useWishlist } from '../stores/wishlist'
 
 // Import all product images
 import JPGLeMale from '../assets/JPGLeMale.png'
@@ -274,9 +278,22 @@ import TomFordNoir from '../assets/Tom Ford Noir Extreme.webp'
 const route = useRoute()
 const router = useRouter()
 const { addToCart, showNotification } = useCart()
+const { isInWishlist, toggleWishlist } = useWishlist()
 
 const quantity = ref(1)
 const product = ref(null)
+const selectedImage = ref(null)
+
+const handleToggleWishlist = () => {
+  if (product.value && product.value !== 'not-found') {
+    const added = toggleWishlist(product.value)
+    if (added) {
+      showNotification(`Added ${product.value.name} to wishlist!`, 'success')
+    } else {
+      showNotification(`Removed ${product.value.name} from wishlist`, 'info')
+    }
+  }
+}
 
 // All products data (same as ProductsPage)
 const allProducts = [
@@ -287,6 +304,7 @@ const allProducts = [
     price: 'Rp. 2.280.000',
     priceNum: 2280000,
     image: JPGLeMale,
+    images: [JPGLeMale, ChanelBleu, TomFordNoir],
     rating: 5,
     reviews: 342,
     badge: 'Best Seller',
@@ -299,6 +317,7 @@ const allProducts = [
     price: 'Rp. 750.000',
     priceNum: 750000,
     image: KingSCE,
+    images: [KingSCE, CreedAventus, GiorgioArmani],
     rating: 5,
     reviews: 289,
     badge: 'Popular',
@@ -311,6 +330,7 @@ const allProducts = [
     price: 'Rp. 1.250.000',
     priceNum: 1250000,
     image: CalvingKlein,
+    images: [CalvingKlein, SharafBlend, EilishPerfume],
     rating: 4,
     reviews: 156,
     badge: 'Trending',
@@ -323,6 +343,7 @@ const allProducts = [
     price: 'Rp. 980.000',
     priceNum: 980000,
     image: SharafBlend,
+    images: [SharafBlend, CalvingKlein, JPGLeMale],
     rating: 5,
     reviews: 203,
     badge: 'New Arrival',
@@ -335,6 +356,7 @@ const allProducts = [
     price: 'Rp. 2.890.000',
     priceNum: 2890000,
     image: ChanelBleu,
+    images: [ChanelBleu, JPGLeMale, CreedAventus],
     rating: 5,
     reviews: 521,
     badge: 'Best Seller',
@@ -347,6 +369,7 @@ const allProducts = [
     price: 'Rp. 4.500.000',
     priceNum: 4500000,
     image: CreedAventus,
+    images: [CreedAventus, ChanelBleu, TomFordNoir],
     rating: 5,
     reviews: 892,
     badge: 'Luxury',
@@ -359,6 +382,7 @@ const allProducts = [
     price: 'Rp. 1.180.000',
     priceNum: 1180000,
     image: EilishPerfume,
+    images: [EilishPerfume, GucciBloom, LaVieBelle],
     rating: 4,
     reviews: 267,
     badge: 'Trending',
@@ -371,6 +395,7 @@ const allProducts = [
     price: 'Rp. 1.850.000',
     priceNum: 1850000,
     image: FrenchAvenue,
+    images: [FrenchAvenue, LaVieBelle, GucciBloom],
     rating: 5,
     reviews: 456,
     badge: 'Popular',
@@ -383,6 +408,7 @@ const allProducts = [
     price: 'Rp. 2.650.000',
     priceNum: 2650000,
     image: GiorgioArmani,
+    images: [GiorgioArmani, CreedAventus, ChanelBleu],
     rating: 5,
     reviews: 634,
     badge: 'Best Seller',
@@ -395,6 +421,7 @@ const allProducts = [
     price: 'Rp. 2.450.000',
     priceNum: 2450000,
     image: GucciBloom,
+    images: [GucciBloom, LaVieBelle, EilishPerfume],
     rating: 5,
     reviews: 523,
     badge: 'Luxury',
@@ -407,6 +434,7 @@ const allProducts = [
     price: 'Rp. 2.780.000',
     priceNum: 2780000,
     image: LaVieBelle,
+    images: [LaVieBelle, GucciBloom, FrenchAvenue],
     rating: 5,
     reviews: 789,
     badge: 'Best Seller',
@@ -419,6 +447,7 @@ const allProducts = [
     price: 'Rp. 3.200.000',
     priceNum: 3200000,
     image: TomFordNoir,
+    images: [TomFordNoir, CreedAventus, ChanelBleu],
     rating: 5,
     reviews: 412,
     badge: 'Luxury',
@@ -452,6 +481,7 @@ const loadProduct = () => {
   
   if (foundProduct) {
     product.value = foundProduct
+    selectedImage.value = foundProduct.images ? foundProduct.images[0] : foundProduct.image
     // Update page title
     document.title = `${foundProduct.name} - Velixier`
   } else {
@@ -492,6 +522,13 @@ watch(() => route.params.id, () => {
     loadProduct()
     quantity.value = 1
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+})
+
+// Watch product changes to update selected image
+watch(() => product.value, (newProduct) => {
+  if (newProduct && newProduct !== 'not-found') {
+    selectedImage.value = newProduct.images ? newProduct.images[0] : newProduct.image
   }
 })
 

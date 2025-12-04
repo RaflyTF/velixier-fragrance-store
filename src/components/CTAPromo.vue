@@ -1,23 +1,23 @@
 <template>
-  <section class="py-24 px-6 bg-black reveal-section">
+  <section class="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-black reveal-section">
     <div class="max-w-7xl mx-auto">
       <!-- Promo Banner -->
-      <div class="bg-linear-to-r from-champagne via-gold to-champagne rounded-3xl p-12 md:p-16 text-center">
-        <h3 class="text-3xl md:text-5xl font-serif font-normal text-dark mb-5">
+      <div class="bg-linear-to-r from-champagne via-gold to-champagne rounded-2xl md:rounded-3xl p-8 md:p-12 lg:p-16 text-center">
+        <h3 class="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-serif font-normal text-dark mb-3 md:mb-4 lg:mb-5">
           Exclusive Holiday Collection
         </h3>
-        <p class="text-base md:text-lg text-dark/80 mb-8 max-w-3xl mx-auto">
+        <p class="text-sm md:text-base lg:text-lg text-dark/80 mb-6 md:mb-8 max-w-3xl mx-auto">
           Limited edition fragrances crafted for special moments. Available for a limited time only.
         </p>
-        <div class="inline-block bg-dark px-8 py-3 rounded-full mb-6">
-          <p class="text-sm font-normal text-gold tracking-wide">
+        <div class="inline-block bg-dark px-6 md:px-8 py-2.5 md:py-3 rounded-full mb-5 md:mb-6">
+          <p class="text-xs md:text-sm font-normal text-gold tracking-wide">
             20% Off - Use Code: <strong>LUXURY20</strong>
           </p>
         </div>
         <div>
           <button
             @click="copyPromoCode"
-            class="inline-flex items-center gap-2 bg-dark hover:bg-dark/90 text-gold border border-gold/30 px-6 py-3 rounded-full transition-all duration-300 hover:scale-105 active:scale-95"
+            class="inline-flex items-center gap-2 bg-dark hover:bg-dark/90 text-gold border border-gold/30 px-5 md:px-6 py-2.5 md:py-3 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 text-sm md:text-base"
           >
             <svg 
               v-if="!copied" 

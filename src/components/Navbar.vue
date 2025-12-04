@@ -5,18 +5,18 @@
       scrolled ? 'bg-dark-lighter/95 border-gold/20 shadow-lg shadow-black/20' : 'bg-dark-lighter/80 border-gold/10'
     ]"
   >
-    <div class="max-w-7xl mx-auto px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 md:h-20">
         <!-- Logo -->
         <router-link 
           to="/" 
-          class="text-2xl font-serif font-normal text-gold tracking-[0.2em] hover:text-champagne transition-all duration-300 hover:scale-105"
+          class="text-xl md:text-2xl font-serif font-normal text-gold tracking-[0.15em] md:tracking-[0.2em] hover:text-champagne transition-all duration-300 hover:scale-105"
         >
           VELIXIER
         </router-link>
 
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center gap-10">
+        <div class="hidden md:flex items-center gap-6 lg:gap-10">
           <router-link 
             v-for="item in navItems" 
             :key="item.name"
@@ -30,21 +30,38 @@
         </div>
 
         <!-- Right Icons -->
-        <div class="flex items-center gap-6">
+        <div class="flex items-center gap-4 md:gap-6">
           <!-- Theme Toggle with Font Awesome -->
           <button 
             @click="handleToggleTheme" 
-            class="text-gold hover:text-champagne transition-all duration-300 hover:scale-110 text-lg"
+            class="text-gold hover:text-champagne transition-all duration-300 hover:scale-110 text-base md:text-lg"
             title="Toggle theme"
           >
             <i v-if="isDark" class="fas fa-sun"></i>
             <i v-else class="fas fa-moon"></i>
           </button>
 
+          <!-- Wishlist with Font Awesome -->
+          <router-link
+            to="/products"
+            class="text-gold hover:text-champagne transition-all duration-300 hover:scale-110 relative text-base md:text-lg hidden sm:block"
+            title="View wishlist"
+          >
+            <i class="fas fa-heart"></i>
+            <Transition name="scale">
+              <span 
+                v-if="wishlistCount > 0" 
+                class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center"
+              >
+                {{ wishlistCount }}
+              </span>
+            </Transition>
+          </router-link>
+
           <!-- Cart with Font Awesome -->
           <button 
             @click="toggleCart" 
-            class="text-gold hover:text-champagne transition-all duration-300 hover:scale-110 relative text-lg"
+            class="text-gold hover:text-champagne transition-all duration-300 hover:scale-110 relative text-base md:text-lg"
           >
             <i class="fas fa-shopping-cart"></i>
             <Transition name="scale">
@@ -60,7 +77,7 @@
           <!-- Mobile Menu Button with Font Awesome -->
           <button 
             @click="mobileMenuOpen = !mobileMenuOpen" 
-            class="md:hidden text-gold hover:text-champagne transition-all duration-300 text-xl"
+            class="md:hidden text-gold hover:text-champagne transition-all duration-300 text-lg md:text-xl"
           >
             <i v-if="!mobileMenuOpen" class="fas fa-bars"></i>
             <i v-else class="fas fa-times"></i>
@@ -70,14 +87,14 @@
 
       <!-- Mobile Navigation -->
       <Transition name="slide-down">
-        <div v-if="mobileMenuOpen" class="md:hidden py-4 border-t border-gold/10">
+        <div v-if="mobileMenuOpen" class="md:hidden py-3 border-t border-gold/10">
           <router-link 
             v-for="item in navItems" 
             :key="item.name"
             :to="item.path"
             @click="mobileMenuOpen = false"
-            class="block py-3 text-cream/80 hover:text-gold transition-colors font-light"
-            active-class="text-gold font-normal"
+            class="block py-2.5 text-cream/80 hover:text-gold hover:bg-gold/5 transition-colors font-light rounded-lg px-2"
+            active-class="text-gold font-normal bg-gold/10"
           >
             {{ item.name }}
           </router-link>
@@ -90,6 +107,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useCart } from '../stores/cart'
+import { useWishlist } from '../stores/wishlist'
 import { useTheme } from '../stores/theme'
 
 const mobileMenuOpen = ref(false)
@@ -97,6 +115,8 @@ const scrolled = ref(false)
 
 const cart = useCart()
 const { toggleCart, cartCount } = cart
+const wishlist = useWishlist()
+const { wishlistCount } = wishlist
 const theme = useTheme()
 const isDark = computed(() => theme.isDark)
 

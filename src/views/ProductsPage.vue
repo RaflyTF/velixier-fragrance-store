@@ -5,53 +5,101 @@
     <main class="py-20 px-6 bg-black min-h-screen">
       <div class="max-w-7xl mx-auto">
         <!-- Header -->
-        <div class="text-center mb-12">
-          <h1 class="text-5xl md:text-6xl font-serif font-normal text-gold mb-4">Our Products</h1>
-          <p class="text-cream/70 text-lg">
+        <div class="text-center mb-8 md:mb-12">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-normal text-gold mb-3 md:mb-4">Our Products</h1>
+          <p class="text-cream/70 text-base md:text-lg">
             Explore our exquisite collection of luxury fragrances
           </p>
         </div>
 
         <!-- Filters & Search -->
-        <div class="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between bg-dark-lighter p-6 rounded-2xl border border-gray-800/30">
-          <!-- Search -->
-          <div class="w-full md:w-96">
-            <div class="relative">
-              <input
-                v-model="searchQuery"
-                type="text"
-                placeholder="Search products..."
-                class="w-full bg-dark border border-gold/20 rounded-full px-6 py-3 text-cream text-sm focus:outline-none focus:border-gold/50 transition-colors pl-12"
-              />
-              <svg class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gold/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
+        <div class="mb-6 md:mb-8 space-y-4">
+          <div class="flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-between bg-dark-lighter p-4 md:p-6 rounded-2xl border border-gray-800/30">
+            <!-- Search -->
+            <div class="w-full md:w-96">
+              <div class="relative">
+                <input
+                  v-model="searchQuery"
+                  type="text"
+                  placeholder="Search products..."
+                  class="w-full bg-dark border border-gold/20 rounded-full px-5 md:px-6 py-2.5 md:py-3 text-cream text-sm focus:outline-none focus:border-gold/50 transition-colors pl-11 md:pl-12"
+                />
+                <svg class="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gold/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex gap-2 md:gap-4 w-full md:w-auto">
+              <!-- Category Filter -->
+              <select
+                v-model="selectedCategory"
+                class="flex-1 md:flex-none bg-dark border border-gold/20 rounded-full px-3 md:px-6 py-2.5 md:py-3 text-cream text-xs md:text-sm focus:outline-none focus:border-gold/50 transition-colors"
+              >
+                <option value="all">All</option>
+                <option value="men">Men</option>
+                <option value="women">Women</option>
+                <option value="unisex">Unisex</option>
+              </select>
+
+              <!-- Stock Filter - Hidden on mobile -->
+              <select
+                v-model="stockFilter"
+                class="hidden sm:block flex-1 md:flex-none bg-dark border border-gold/20 rounded-full px-3 md:px-6 py-2.5 md:py-3 text-cream text-xs md:text-sm focus:outline-none focus:border-gold/50 transition-colors"
+              >
+                <option value="all">All Stock</option>
+                <option value="in-stock">In Stock</option>
+                <option value="limited">Limited</option>
+              </select>
+
+              <!-- Sort -->
+              <select
+                v-model="sortBy"
+                class="flex-1 md:flex-none bg-dark border border-gold/20 rounded-full px-3 md:px-6 py-2.5 md:py-3 text-cream text-xs md:text-sm focus:outline-none focus:border-gold/50 transition-colors"
+              >
+                <option value="featured">Featured</option>
+                <option value="price-low">Price ↑</option>
+                <option value="price-high">Price ↓</option>
+                <option value="name">A-Z</option>
+              </select>
             </div>
           </div>
 
-          <!-- Filters -->
-          <div class="flex gap-4 w-full md:w-auto">
-            <!-- Category Filter -->
-            <select
-              v-model="selectedCategory"
-              class="flex-1 md:flex-none bg-dark border border-gold/20 rounded-full px-6 py-3 text-cream text-sm focus:outline-none focus:border-gold/50 transition-colors"
-            >
-              <option value="all">All Categories</option>
-              <option value="men">Men</option>
-              <option value="women">Women</option>
-              <option value="unisex">Unisex</option>
-            </select>
-
-            <!-- Sort -->
-            <select
-              v-model="sortBy"
-              class="flex-1 md:flex-none bg-dark border border-gold/20 rounded-full px-6 py-3 text-cream text-sm focus:outline-none focus:border-gold/50 transition-colors"
-            >
-              <option value="featured">Featured</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="name">Name: A to Z</option>
-            </select>
+          <!-- Price Range Filter -->
+          <div class="bg-dark-lighter p-4 md:p-6 rounded-2xl border border-gray-800/30">
+            <div class="flex flex-col sm:flex-row items-center gap-4">
+              <label class="text-cream text-sm font-medium whitespace-nowrap">
+                <i class="fas fa-filter mr-2 text-gold"></i>Price Range:
+              </label>
+              <div class="flex items-center gap-3 w-full sm:w-auto">
+                <div class="flex-1 sm:flex-none">
+                  <input
+                    v-model.number="priceRange.min"
+                    type="number"
+                    placeholder="Min"
+                    class="w-full sm:w-32 bg-dark border border-gold/20 rounded-lg px-3 py-2 text-cream text-sm focus:outline-none focus:border-gold/50 transition-colors"
+                  />
+                </div>
+                <span class="text-cream/50">-</span>
+                <div class="flex-1 sm:flex-none">
+                  <input
+                    v-model.number="priceRange.max"
+                    type="number"
+                    placeholder="Max"
+                    class="w-full sm:w-32 bg-dark border border-gold/20 rounded-lg px-3 py-2 text-cream text-sm focus:outline-none focus:border-gold/50 transition-colors"
+                  />
+                </div>
+                <button
+                  v-if="priceRange.min || priceRange.max"
+                  @click="resetPriceFilter"
+                  class="px-3 py-2 bg-dark border border-gold/20 hover:border-gold/50 text-gold rounded-lg text-xs transition-colors"
+                  title="Reset price filter"
+                >
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -61,23 +109,40 @@
         </div>
 
         <!-- Product Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           <div 
             v-for="product in filteredProducts" 
             :key="product.id"
-            class="bg-dark-lighter rounded-3xl overflow-hidden border border-gray-800/30 hover:border-gold/30 transition-all duration-300 group relative"
+            class="bg-dark-lighter rounded-2xl md:rounded-3xl overflow-hidden border border-gray-800/30 hover:border-gold/30 transition-all duration-300 group relative"
           >
             <!-- Badge -->
-            <div class="absolute top-4 left-4 z-10 bg-gold text-dark px-4 py-1.5 rounded-full text-xs font-medium">
+            <div class="absolute top-3 left-3 md:top-4 md:left-4 z-10 bg-gold text-dark px-3 py-1 md:px-4 md:py-1.5 rounded-full text-xs font-medium">
               {{ product.badge }}
             </div>
 
+            <!-- Stock Badge -->
+            <div class="absolute top-3 right-3 md:top-4 md:right-4 z-10 px-3 py-1 md:px-4 md:py-1.5 rounded-full text-xs font-medium"
+              :class="product.stock === 'in-stock' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : product.stock === 'limited' ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'">
+              <i class="fas fa-box mr-1"></i>
+              {{ product.stock === 'in-stock' ? 'In Stock' : product.stock === 'limited' ? 'Limited' : 'Sold Out' }}
+            </div>
+
+            <!-- Wishlist Button -->
+            <button
+              @click="toggleWishlist(product)"
+              class="absolute top-14 right-3 md:top-16 md:right-4 z-10 w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-300"
+              :class="isInWishlist(product.id) ? 'bg-red-500 text-white' : 'bg-black/50 text-cream hover:bg-gold hover:text-dark'"
+              :title="isInWishlist(product.id) ? 'Remove from wishlist' : 'Add to wishlist'"
+            >
+              <i class="text-sm md:text-base" :class="isInWishlist(product.id) ? 'fas fa-heart' : 'far fa-heart'"></i>
+            </button>
+
             <!-- Product Image -->
-            <div class="relative h-80 overflow-hidden bg-black flex items-center justify-center p-6">
+            <div class="relative h-64 sm:h-72 md:h-80 overflow-hidden bg-black">
               <img 
                 :src="product.image" 
                 :alt="product.name" 
-                class="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-110"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
               
               <!-- Quick View Overlay -->
@@ -92,37 +157,39 @@
             </div>
 
             <!-- Product Info -->
-            <div class="p-6">
+            <div class="p-4 sm:p-5 md:p-6">
               <router-link 
                 :to="`/products/${product.id}`"
                 class="block hover:text-champagne transition-colors"
               >
-                <h3 class="text-xl font-serif font-normal text-gold mb-2 hover:text-champagne transition-colors">{{ product.name }}</h3>
+                <h3 class="text-lg sm:text-xl font-serif font-normal text-gold mb-2 hover:text-champagne transition-colors line-clamp-1">{{ product.name }}</h3>
               </router-link>
               
               <!-- Rating Stars with Font Awesome -->
-              <div class="flex items-center gap-1 mb-3">
-                <i v-for="i in 5" :key="i" class="fas fa-star text-sm" :class="i <= product.rating ? 'text-gold' : 'text-gray-600'"></i>
-                <span class="text-cream/60 text-sm ml-1">({{ product.reviews }})</span>
+              <div class="flex items-center gap-1 mb-2 md:mb-3">
+                <i v-for="i in 5" :key="i" class="fas fa-star text-xs md:text-sm" :class="i <= product.rating ? 'text-gold' : 'text-gray-600'"></i>
+                <span class="text-cream/60 text-xs md:text-sm ml-1">({{ product.reviews }})</span>
               </div>
               
-              <p class="text-cream/70 text-sm mb-4 line-clamp-2">{{ product.description }}</p>
-              <p class="text-xl font-normal text-cream mb-4">{{ product.price }}</p>
+              <p class="text-cream/70 text-xs sm:text-sm mb-3 md:mb-4 line-clamp-2">{{ product.description }}</p>
+              <p class="text-lg sm:text-xl font-normal text-cream mb-3 md:mb-4">{{ product.price }}</p>
               
               <div class="flex gap-2">
                 <button 
                   @click="addToCart(product)"
-                  class="flex-1 bg-champagne hover:bg-gold text-dark py-3 rounded-2xl font-normal text-base flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-lg hover:shadow-gold/20 hover:scale-105 active:scale-95"
+                  :disabled="product.stock === 'out-of-stock'"
+                  class="flex-1 bg-champagne hover:bg-gold text-dark py-2.5 md:py-3 rounded-xl md:rounded-2xl font-normal text-sm md:text-base flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-lg hover:shadow-gold/20 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  <span>Add to cart</span>
-                  <i class="fas fa-shopping-cart"></i>
+                  <span class="hidden sm:inline">{{ product.stock === 'out-of-stock' ? 'Sold Out' : 'Add to cart' }}</span>
+                  <span class="sm:hidden">{{ product.stock === 'out-of-stock' ? 'Sold Out' : 'Add' }}</span>
+                  <i class="fas fa-shopping-cart text-sm"></i>
                 </button>
                 <router-link
                   :to="`/products/${product.id}`"
-                  class="bg-dark border border-gold/20 hover:bg-gold hover:text-dark text-gold px-4 rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-105"
+                  class="bg-dark border border-gold/20 hover:bg-gold hover:text-dark text-gold px-3 md:px-4 rounded-xl md:rounded-2xl flex items-center justify-center transition-all duration-300 hover:scale-105"
                   title="View Details"
                 >
-                  <i class="fas fa-eye"></i>
+                  <i class="fas fa-eye text-sm"></i>
                 </router-link>
               </div>
             </div>
@@ -225,6 +292,7 @@ import { ref, computed } from 'vue'
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
 import { useCart } from '../stores/cart'
+import { useWishlist } from '../stores/wishlist'
 
 import JPGLeMale from '../assets/JPGLeMale.png'
 import KingSCE from '../assets/KingSCE.png'
@@ -240,11 +308,23 @@ import LaVieBelle from '../assets/La Vie Est Belle by Lancôme.webp'
 import TomFordNoir from '../assets/Tom Ford Noir Extreme.webp'
 
 const { addToCart } = useCart()
+const { isInWishlist, toggleWishlist: toggleWishlistItem } = useWishlist()
 const searchQuery = ref('')
 const selectedCategory = ref('all')
+const stockFilter = ref('all')
 const sortBy = ref('featured')
 const quickViewProduct = ref(null)
 const imageLoaded = ref({})
+const priceRange = ref({ min: null, max: null })
+
+const resetPriceFilter = () => {
+  priceRange.value = { min: null, max: null }
+}
+
+const toggleWishlist = (product) => {
+  const added = toggleWishlistItem(product)
+  // Could add notification here if needed
+}
 
 const allProducts = [
   {
@@ -257,7 +337,8 @@ const allProducts = [
     rating: 5,
     reviews: 342,
     badge: 'Best Seller',
-    category: 'men'
+    category: 'men',
+    stock: 'in-stock'
   },
   {
     id: 2,
@@ -269,7 +350,8 @@ const allProducts = [
     rating: 5,
     reviews: 289,
     badge: 'Popular',
-    category: 'men'
+    category: 'men',
+    stock: 'in-stock'
   },
   {
     id: 3,
@@ -281,7 +363,8 @@ const allProducts = [
     rating: 4,
     reviews: 156,
     badge: 'Trending',
-    category: 'unisex'
+    category: 'unisex',
+    stock: 'limited'
   },
   {
     id: 4,
@@ -293,7 +376,8 @@ const allProducts = [
     rating: 5,
     reviews: 203,
     badge: 'New Arrival',
-    category: 'unisex'
+    category: 'unisex',
+    stock: 'in-stock'
   },
   {
     id: 5,
@@ -305,7 +389,8 @@ const allProducts = [
     rating: 5,
     reviews: 521,
     badge: 'Best Seller',
-    category: 'men'
+    category: 'men',
+    stock: 'in-stock'
   },
   {
     id: 6,
@@ -317,7 +402,8 @@ const allProducts = [
     rating: 5,
     reviews: 892,
     badge: 'Luxury',
-    category: 'men'
+    category: 'men',
+    stock: 'limited'
   },
   {
     id: 7,
@@ -329,7 +415,8 @@ const allProducts = [
     rating: 4,
     reviews: 234,
     badge: 'New Arrival',
-    category: 'women'
+    category: 'women',
+    stock: 'in-stock'
   },
   {
     id: 8,
@@ -341,7 +428,8 @@ const allProducts = [
     rating: 5,
     reviews: 178,
     badge: 'Popular',
-    category: 'women'
+    category: 'women',
+    stock: 'in-stock'
   },
   {
     id: 9,
@@ -353,7 +441,8 @@ const allProducts = [
     rating: 5,
     reviews: 445,
     badge: 'Best Seller',
-    category: 'men'
+    category: 'men',
+    stock: 'limited'
   },
   {
     id: 10,
@@ -365,7 +454,8 @@ const allProducts = [
     rating: 5,
     reviews: 367,
     badge: 'Trending',
-    category: 'women'
+    category: 'women',
+    stock: 'in-stock'
   },
   {
     id: 11,
@@ -377,7 +467,8 @@ const allProducts = [
     rating: 5,
     reviews: 612,
     badge: 'Best Seller',
-    category: 'women'
+    category: 'women',
+    stock: 'in-stock'
   },
   {
     id: 12,
@@ -389,7 +480,8 @@ const allProducts = [
     rating: 5,
     reviews: 298,
     badge: 'Luxury',
-    category: 'men'
+    category: 'men',
+    stock: 'in-stock'
   }
 ]
 
@@ -407,6 +499,19 @@ const filteredProducts = computed(() => {
   // Filter by category
   if (selectedCategory.value !== 'all') {
     products = products.filter(p => p.category === selectedCategory.value)
+  }
+
+  // Filter by stock
+  if (stockFilter.value !== 'all') {
+    products = products.filter(p => p.stock === stockFilter.value)
+  }
+
+  // Filter by price range
+  if (priceRange.value.min !== null && priceRange.value.min > 0) {
+    products = products.filter(p => p.priceNum >= priceRange.value.min)
+  }
+  if (priceRange.value.max !== null && priceRange.value.max > 0) {
+    products = products.filter(p => p.priceNum <= priceRange.value.max)
   }
 
   // Sort

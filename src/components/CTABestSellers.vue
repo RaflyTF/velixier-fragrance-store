@@ -1,34 +1,34 @@
 <template>
-  <section class="py-24 px-6 bg-black reveal-section">
+  <section class="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-black reveal-section">
     <div class="max-w-7xl mx-auto">
       <!-- Section Title -->
-      <div class="text-center mb-16">
-        <h2 class="text-5xl md:text-6xl font-serif font-normal text-gold mb-4">
+      <div class="text-center mb-10 md:mb-14 lg:mb-16">
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif font-normal text-gold mb-3 md:mb-4">
           Best Sellers
         </h2>
-        <p class="text-cream/70 text-base">
+        <p class="text-cream/70 text-sm md:text-base">
           Discover our most beloved fragrances, chosen by connoisseurs worldwide
         </p>
       </div>
 
       <!-- Products Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-10 max-w-6xl mx-auto">
         <div 
           v-for="product in products" 
           :key="product.id"
-          class="bg-dark-lighter rounded-3xl overflow-hidden border border-gray-800/30 hover:border-gold/30 transition-all duration-300 group relative"
+          class="bg-dark-lighter rounded-2xl md:rounded-3xl overflow-hidden border border-gray-800/30 hover:border-gold/30 transition-all duration-300 group relative"
         >
           <!-- Badge -->
-          <div class="absolute top-4 left-4 z-10 bg-gold text-dark px-4 py-1.5 rounded-full text-xs font-medium">
+          <div class="absolute top-3 left-3 md:top-4 md:left-4 z-10 bg-gold text-dark px-3 py-1 md:px-4 md:py-1.5 rounded-full text-xs font-medium">
             {{ product.badge }}
           </div>
 
           <!-- Product Image -->
-          <div class="relative h-[420px] overflow-hidden bg-black flex items-center justify-center p-12">
+          <div class="relative h-80 sm:h-96 md:h-[420px] overflow-hidden bg-black">
             <img 
               :src="product.image" 
               :alt="product.name" 
-              class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
             
             <!-- Quick View Overlay -->
@@ -43,28 +43,28 @@
           </div>
 
           <!-- Product Info -->
-          <div class="p-8 border-t border-gray-800/30">
-            <h3 class="text-2xl font-serif font-normal text-gold mb-2">
+          <div class="p-5 md:p-6 lg:p-8 border-t border-gray-800/30">
+            <h3 class="text-xl md:text-2xl font-serif font-normal text-gold mb-2">
               {{ product.name }}
             </h3>
             
             <!-- Rating Stars -->
-            <div class="flex items-center gap-1 mb-3">
-              <svg v-for="i in 5" :key="i" class="h-4 w-4" :class="i <= product.rating ? 'text-gold' : 'text-gray-600'" fill="currentColor" viewBox="0 0 20 20">
+            <div class="flex items-center gap-1 mb-2 md:mb-3">
+              <svg v-for="i in 5" :key="i" class="h-3.5 w-3.5 md:h-4 md:w-4" :class="i <= product.rating ? 'text-gold' : 'text-gray-600'" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
-              <span class="text-cream/60 text-sm ml-1">({{ product.reviews }})</span>
+              <span class="text-cream/60 text-xs md:text-sm ml-1">({{ product.reviews }})</span>
             </div>
             
-            <p class="text-xl font-normal text-cream mb-6">
+            <p class="text-lg md:text-xl font-normal text-cream mb-4 md:mb-6">
               {{ product.price }}
             </p>
             <button 
               @click="addToCart(product)"
-              class="w-full bg-champagne hover:bg-gold text-dark py-3.5 rounded-2xl font-normal text-base flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-lg hover:shadow-gold/20 hover:scale-105 active:scale-95"
+              class="w-full bg-champagne hover:bg-gold text-dark py-3 md:py-3.5 rounded-xl md:rounded-2xl font-normal text-sm md:text-base flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-lg hover:shadow-gold/20 hover:scale-105 active:scale-95"
             >
               <span>Add to cart</span>
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
               </svg>
             </button>

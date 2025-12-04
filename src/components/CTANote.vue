@@ -1,19 +1,19 @@
 <template>
-  <section class="py-24 px-6 bg-black reveal-section">
+  <section class="py-16 md:py-20 lg:py-24 px-4 md:px-6 bg-black reveal-section">
     <div class="max-w-7xl mx-auto">
       <!-- Section Title -->
-      <div class="text-center mb-16">
-        <h2 class="text-5xl md:text-6xl font-serif font-normal text-gold">
+      <div class="text-center mb-10 md:mb-14 lg:mb-16">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-serif font-normal text-gold">
           Best Note For Fragrance
         </h2>
       </div>
 
       <!-- Note Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
         <div 
           v-for="note in notes" 
           :key="note.name"
-          class="group relative overflow-hidden rounded-3xl h-[400px] cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-gold/20"
+          class="group relative overflow-hidden rounded-2xl md:rounded-3xl h-[300px] md:h-[350px] lg:h-[400px] cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-gold/20"
         >
           <!-- Background Image -->
           <div class="absolute inset-0">
@@ -26,8 +26,8 @@
           </div>
 
           <!-- Content -->
-          <div class="relative h-full flex items-end p-8">
-            <h3 class="text-3xl md:text-4xl font-serif font-normal text-white">
+          <div class="relative h-full flex items-end p-5 md:p-6 lg:p-8">
+            <h3 class="text-2xl md:text-3xl lg:text-4xl font-serif font-normal text-white">
               {{ note.name }}
             </h3>
           </div>

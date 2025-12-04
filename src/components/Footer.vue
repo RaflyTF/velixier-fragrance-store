@@ -58,7 +58,7 @@
             </button>
           </form>
           <div class="flex gap-4 mt-6">
-            <a href="https://instagram.com" target="_blank" class="text-gold hover:text-champagne transition-colors text-lg">
+            <a href="https://www.instagram.com/raflyytf?igsh=MXdqc2piYWpmaHF2cQ==" target="_blank" class="text-gold hover:text-champagne transition-colors text-lg">
               <i class="fab fa-instagram"></i>
             </a>
             <a href="https://facebook.com" target="_blank" class="text-gold hover:text-champagne transition-colors text-lg">

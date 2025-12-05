@@ -31,44 +31,93 @@
             </div>
 
             <!-- Filters -->
-            <div class="flex gap-2 md:gap-4 w-full md:w-auto">
+            <div class="flex flex-col sm:flex-row gap-2 md:gap-3 w-full md:w-auto">
               <!-- Category Filter -->
-              <select
-                v-model="selectedCategory"
-                class="flex-1 md:flex-none bg-dark border border-gold/20 rounded-full px-3 md:px-6 py-2.5 md:py-3 text-cream text-xs md:text-sm focus:outline-none focus:border-gold/50 transition-colors"
-              >
-                <option value="all">All</option>
-                <option value="men">Men</option>
-                <option value="women">Women</option>
-                <option value="unisex">Unisex</option>
-              </select>
+              <div class="relative w-full sm:flex-1 md:w-auto">
+                <button
+                  @click="toggleDropdown('category')"
+                  class="w-full bg-dark border border-gold/20 rounded-full px-4 md:px-6 py-2.5 md:py-3 text-cream text-sm focus:outline-none focus:border-gold/50 transition-colors flex items-center justify-between whitespace-nowrap"
+                >
+                  <span class="truncate">{{ getCategoryLabel }}</span>
+                  <svg class="w-4 h-4 ml-2 transition-transform" :class="{ 'rotate-180': openDropdown === 'category' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div
+                  v-if="openDropdown === 'category'"
+                  class="absolute z-50 w-full mt-2 bg-dark border border-gold/20 rounded-2xl shadow-xl overflow-hidden"
+                >
+                  <button
+                    v-for="option in categoryOptions"
+                    :key="option.value"
+                    @click="selectCategory(option.value)"
+                    class="w-full px-4 py-2.5 text-left text-sm text-cream hover:bg-gold/10 transition-colors"
+                    :class="{ 'bg-gold/20': selectedCategory === option.value }"
+                  >
+                    {{ option.label }}
+                  </button>
+                </div>
+              </div>
 
               <!-- Stock Filter - Hidden on mobile -->
-              <select
-                v-model="stockFilter"
-                class="hidden sm:block flex-1 md:flex-none bg-dark border border-gold/20 rounded-full px-3 md:px-6 py-2.5 md:py-3 text-cream text-xs md:text-sm focus:outline-none focus:border-gold/50 transition-colors"
-              >
-                <option value="all">All Stock</option>
-                <option value="in-stock">In Stock</option>
-                <option value="limited">Limited</option>
-              </select>
+              <div class="hidden sm:block relative sm:flex-1 md:w-auto">
+                <button
+                  @click="toggleDropdown('stock')"
+                  class="w-full bg-dark border border-gold/20 rounded-full px-4 md:px-6 py-2.5 md:py-3 text-cream text-sm focus:outline-none focus:border-gold/50 transition-colors flex items-center justify-between whitespace-nowrap"
+                >
+                  <span class="truncate">{{ getStockLabel }}</span>
+                  <svg class="w-4 h-4 ml-2 transition-transform" :class="{ 'rotate-180': openDropdown === 'stock' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div
+                  v-if="openDropdown === 'stock'"
+                  class="absolute z-50 w-full mt-2 bg-dark border border-gold/20 rounded-2xl shadow-xl overflow-hidden"
+                >
+                  <button
+                    v-for="option in stockOptions"
+                    :key="option.value"
+                    @click="selectStock(option.value)"
+                    class="w-full px-4 py-2.5 text-left text-sm text-cream hover:bg-gold/10 transition-colors"
+                    :class="{ 'bg-gold/20': stockFilter === option.value }"
+                  >
+                    {{ option.label }}
+                  </button>
+                </div>
+              </div>
 
               <!-- Sort -->
-              <select
-                v-model="sortBy"
-                class="flex-1 md:flex-none bg-dark border border-gold/20 rounded-full px-3 md:px-6 py-2.5 md:py-3 text-cream text-xs md:text-sm focus:outline-none focus:border-gold/50 transition-colors"
-              >
-                <option value="featured">Featured</option>
-                <option value="price-low">Price ↑</option>
-                <option value="price-high">Price ↓</option>
-                <option value="name">A-Z</option>
-              </select>
+              <div class="relative w-full sm:flex-1 md:w-auto">
+                <button
+                  @click="toggleDropdown('sort')"
+                  class="w-full bg-dark border border-gold/20 rounded-full px-4 md:px-6 py-2.5 md:py-3 text-cream text-sm focus:outline-none focus:border-gold/50 transition-colors flex items-center justify-between whitespace-nowrap"
+                >
+                  <span class="truncate">{{ getSortLabel }}</span>
+                  <svg class="w-4 h-4 ml-2 transition-transform" :class="{ 'rotate-180': openDropdown === 'sort' }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div
+                  v-if="openDropdown === 'sort'"
+                  class="absolute z-50 w-full mt-2 bg-dark border border-gold/20 rounded-2xl shadow-xl overflow-hidden"
+                >
+                  <button
+                    v-for="option in sortOptions"
+                    :key="option.value"
+                    @click="selectSort(option.value)"
+                    class="w-full px-4 py-2.5 text-left text-sm text-cream hover:bg-gold/10 transition-colors"
+                    :class="{ 'bg-gold/20': sortBy === option.value }"
+                  >
+                    {{ option.label }}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- Price Range Filter -->
-          <div class="bg-dark-lighter p-4 md:p-6 rounded-2xl border border-gray-800/30">
-            <div class="flex flex-col sm:flex-row items-center gap-4">
+          <div class="bg-dark-lighter p-4 md:p-6 rounded-2xl border border-gray-800/30 overflow-hidden">
+            <div class="flex flex-col sm:flex-row items-center gap-4 max-w-full">
               <label class="text-cream text-sm font-medium whitespace-nowrap">
                 <i class="fas fa-filter mr-2 text-gold"></i>Price Range:
               </label>
@@ -288,7 +337,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
 import { useCart } from '../stores/cart'
@@ -316,6 +365,73 @@ const sortBy = ref('featured')
 const quickViewProduct = ref(null)
 const imageLoaded = ref({})
 const priceRange = ref({ min: null, max: null })
+const openDropdown = ref(null)
+
+// Dropdown options
+const categoryOptions = [
+  { value: 'all', label: 'All Categories' },
+  { value: 'men', label: 'Men' },
+  { value: 'women', label: 'Women' },
+  { value: 'unisex', label: 'Unisex' }
+]
+
+const stockOptions = [
+  { value: 'all', label: 'All Stock' },
+  { value: 'in-stock', label: 'In Stock' },
+  { value: 'limited', label: 'Limited' }
+]
+
+const sortOptions = [
+  { value: 'featured', label: 'Featured' },
+  { value: 'price-low', label: 'Price: Low to High' },
+  { value: 'price-high', label: 'Price: High to Low' },
+  { value: 'name', label: 'Name: A-Z' }
+]
+
+// Computed labels
+const getCategoryLabel = computed(() => {
+  const option = categoryOptions.find(o => o.value === selectedCategory.value)
+  return option ? option.label : 'All Categories'
+})
+
+const getStockLabel = computed(() => {
+  const option = stockOptions.find(o => o.value === stockFilter.value)
+  return option ? option.label : 'All Stock'
+})
+
+const getSortLabel = computed(() => {
+  const option = sortOptions.find(o => o.value === sortBy.value)
+  return option ? option.label : 'Featured'
+})
+
+// Dropdown methods
+const toggleDropdown = (dropdown) => {
+  openDropdown.value = openDropdown.value === dropdown ? null : dropdown
+}
+
+const selectCategory = (value) => {
+  selectedCategory.value = value
+  openDropdown.value = null
+}
+
+const selectStock = (value) => {
+  stockFilter.value = value
+  openDropdown.value = null
+}
+
+const selectSort = (value) => {
+  sortBy.value = value
+  openDropdown.value = null
+}
+
+// Close dropdown when clicking outside
+onMounted(() => {
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.relative')) {
+      openDropdown.value = null
+    }
+  })
+})
 
 const resetPriceFilter = () => {
   priceRange.value = { min: null, max: null }

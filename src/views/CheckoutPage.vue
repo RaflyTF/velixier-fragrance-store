@@ -106,20 +106,66 @@
                 </div>
 
                 <div>
-                  <label class="block text-cream/70 text-sm mb-2">Province</label>
-                  <select
-                    v-model="checkoutForm.province"
-                    class="w-full bg-dark border border-gold/20 rounded-xl px-4 py-3 text-cream focus:outline-none focus:border-gold/50 transition-colors"
-                    :class="{ 'border-red-500': errors.province }"
-                  >
-                    <option value="">Select Province</option>
-                    <option value="DKI Jakarta">DKI Jakarta</option>
-                    <option value="Jawa Barat">Jawa Barat</option>
-                    <option value="Jawa Tengah">Jawa Tengah</option>
-                    <option value="Jawa Timur">Jawa Timur</option>
-                    <option value="Bali">Bali</option>
-                    <option value="Sumatera Utara">Sumatera Utara</option>
-                  </select>
+                  <label class="block text-cream/70 text-sm mb-2">Province <span class="text-red-500">*</span></label>
+                  <div class="relative">
+                    <!-- Search Input -->
+                    <div class="relative">
+                      <input
+                        v-model="provinceSearch"
+                        @focus="showProvinceDropdown = true"
+                        @input="filterProvinces"
+                        type="text"
+                        placeholder="Search or select province..."
+                        class="w-full bg-dark border border-gold/20 rounded-xl px-4 py-3 pr-10 text-cream focus:outline-none focus:border-gold/50 transition-colors"
+                        :class="{ 'border-red-500': errors.province, 'border-green-500': checkoutForm.province && !errors.province }"
+                      />
+                      <svg 
+                        v-if="!checkoutForm.province"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gold/50 transition-transform"
+                        :class="{ 'rotate-180': showProvinceDropdown }"
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                      <svg 
+                        v-else
+                        class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-green-500"
+                        fill="currentColor" 
+                        viewBox="0 0 20 20"
+                      >
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                      </svg>
+                    </div>
+                    
+                    <!-- Dropdown Options -->
+                    <div
+                      v-if="showProvinceDropdown && filteredProvinces.length > 0"
+                      class="absolute z-50 w-full mt-2 bg-dark border border-gold/20 rounded-xl shadow-xl max-h-60 overflow-y-auto custom-scrollbar"
+                    >
+                      <button
+                        v-for="province in filteredProvinces"
+                        :key="province"
+                        @click="selectProvince(province)"
+                        class="w-full px-4 py-3 text-left text-sm text-cream hover:bg-gold/10 transition-colors border-b border-gray-800/30 last:border-b-0 flex items-center gap-2"
+                        :class="{ 'bg-gold/20': checkoutForm.province === province }"
+                      >
+                        <svg v-if="checkoutForm.province === province" class="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                        {{ province }}
+                      </button>
+                    </div>
+                    
+                    <!-- No Results -->
+                    <div
+                      v-if="showProvinceDropdown && provinceSearch && filteredProvinces.length === 0"
+                      class="absolute z-50 w-full mt-2 bg-dark border border-gold/20 rounded-xl shadow-xl px-4 py-3 text-sm text-cream/60 text-center"
+                    >
+                      No provinces found
+                    </div>
+                  </div>
                   <p v-if="errors.province" class="text-red-500 text-xs mt-1">{{ errors.province }}</p>
                 </div>
               </div>
@@ -242,7 +288,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCart } from '../stores/cart'
 import { sendOrderConfirmation } from '../services/emailService'
@@ -254,6 +300,53 @@ const { cartItems, cartTotal, cartCount, clearCart, showNotification } = useCart
 
 const isProcessing = ref(false)
 const errors = ref({})
+
+// Province search state
+const provinceSearch = ref('')
+const showProvinceDropdown = ref(false)
+const allProvinces = [
+  'Aceh', 'Bali', 'Banten', 'Bengkulu', 'DI Yogyakarta', 'DKI Jakarta',
+  'Gorontalo', 'Jambi', 'Jawa Barat', 'Jawa Tengah', 'Jawa Timur',
+  'Kalimantan Barat', 'Kalimantan Selatan', 'Kalimantan Tengah', 'Kalimantan Timur', 'Kalimantan Utara',
+  'Kepulauan Bangka Belitung', 'Kepulauan Riau', 'Lampung', 'Maluku', 'Maluku Utara',
+  'Nusa Tenggara Barat', 'Nusa Tenggara Timur', 'Papua', 'Papua Barat', 'Papua Barat Daya',
+  'Papua Pegunungan', 'Papua Selatan', 'Papua Tengah', 'Riau', 'Sulawesi Barat',
+  'Sulawesi Selatan', 'Sulawesi Tengah', 'Sulawesi Tenggara', 'Sulawesi Utara',
+  'Sumatera Barat', 'Sumatera Selatan', 'Sumatera Utara'
+]
+const filteredProvinces = ref([...allProvinces])
+
+// Filter provinces based on search
+const filterProvinces = () => {
+  const search = provinceSearch.value.toLowerCase()
+  if (!search) {
+    filteredProvinces.value = [...allProvinces]
+  } else {
+    filteredProvinces.value = allProvinces.filter(p => 
+      p.toLowerCase().includes(search)
+    )
+  }
+}
+
+// Select province from dropdown
+const selectProvince = (province) => {
+  checkoutForm.value.province = province
+  provinceSearch.value = province
+  showProvinceDropdown.value = false
+  // Clear error if exists
+  if (errors.value.province) {
+    delete errors.value.province
+  }
+}
+
+// Close dropdown when clicking outside
+onMounted(() => {
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.relative')) {
+      showProvinceDropdown.value = false
+    }
+  })
+})
 
 const checkoutForm = ref({
   email: '',

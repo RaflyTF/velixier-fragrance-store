@@ -276,3 +276,9 @@ Copyright © 2025 VELIXIER. All rights reserved.
 ---
 
 **🌟 Website luxury perfume e-commerce yang memenuhi 100% requirements Proyek Desain Web dengan teknologi modern!**
+
+
+COTS readme
+- menambahkan 3 grid hanya saja belum center
+- menambahkan h2 sebagai nama
+- menambahkan h3 sebagai nim dan prodi

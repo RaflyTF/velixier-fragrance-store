@@ -158,6 +158,27 @@
           </div>
         </div>
 
+        <!-- COTS Section -->
+       <div class="mb-20">
+        <h2 class="text-4xl font-serif text-gold text-justify mb-12 reveal-section" :class="{ 'revealed': isRevealed }">Rafly Taufika Fikri</h2>
+        <h3 class="text-2xl font-serif text-gold text-justify mb-12 reveal-section" :class="{ 'revealed': isRevealed }">11231083 - Informatika - ITK</h3>
+          <div class="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-4 gap-6">
+            <div 
+              v-for="(value, index) in card" 
+              :key="index"
+              class="group bg-dark-lighter p-8 rounded-2xl place-content-center border border-gray-800/30 hover:border-gold/50 transition-all duration-300 hover:scale-105 reveal-section" 
+              :class="{ 'revealed': isRevealed }"
+              :style="{ animationDelay: `${0.4 + index * 0.1}s` }"
+            >
+              <div class="text-5xl mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                {{ value.icon }}
+              </div>
+              <h3 class="text-xl font-serif text-gold mb-3">{{ value.title }}</h3>
+              <p class="text-cream/70 text-sm leading-relaxed">{{ value.description }}</p>
+            </div>
+          </div>
+        </div>
+
         <!-- CTA Section -->
         <div class="text-center pt-8">
           <router-link 
@@ -289,6 +310,24 @@ const gallery = [
   { icon: '🎨', label: 'Composition', gradient: 'linear-gradient(135deg, #3d3d3d 0%, #1a1a1a 100%)' },
   { icon: '💧', label: 'Testing', gradient: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)' },
   { icon: '✨', label: 'Bottling', gradient: 'linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%)' }
+]
+
+const card = [
+  {
+    icon: '👨‍💻',
+    title: 'Vibe Coder',
+    description: 'As an informatics student, I must balance coding with creativity to craft seamless digital experiences.'
+  },
+  {
+    icon: '🧪',
+    title: 'Perfume Expert',
+    description: 'I like perfume alot, thats why i build this website.'
+  },
+  {
+    icon: '🧑‍🍳',
+    title: 'Cooking',
+    description: 'I also can cook, thats why this website look cooked.'
+  },
 ]
 
 // Counter Animation

@@ -35,6 +35,7 @@
           <button 
             @click="handleToggleTheme" 
             class="text-gold hover:text-champagne transition-all duration-300 hover:scale-110 text-base md:text-lg"
+            :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
             title="Toggle theme"
           >
             <i v-if="isDark" class="fas fa-sun"></i>
@@ -62,6 +63,7 @@
           <button 
             @click="toggleCart" 
             class="text-gold hover:text-champagne transition-all duration-300 hover:scale-110 relative text-base md:text-lg"
+            :aria-label="cartCount > 0 ? `Shopping cart with ${cartCount} items` : 'Shopping cart empty'"
           >
             <i class="fas fa-shopping-cart"></i>
             <Transition name="scale">
@@ -78,6 +80,8 @@
           <button 
             @click="mobileMenuOpen = !mobileMenuOpen" 
             class="md:hidden text-gold hover:text-champagne transition-all duration-300 text-lg md:text-xl"
+            :aria-label="mobileMenuOpen ? 'Close menu' : 'Open menu'"
+            :aria-expanded="mobileMenuOpen"
           >
             <i v-if="!mobileMenuOpen" class="fas fa-bars"></i>
             <i v-else class="fas fa-times"></i>

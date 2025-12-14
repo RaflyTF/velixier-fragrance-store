@@ -5,7 +5,7 @@
       <img 
         ref="heroImage"
         src="../assets/HeroHome.webp" 
-        alt="Luxury Perfume" 
+        alt="Luxury perfume bottles displayed on elegant marble surface with golden accents" 
         class="w-full h-full object-cover transition-transform duration-100 ease-out"
         :style="{ transform: `translateY(${scrollY * 0.5}px)` }"
       />

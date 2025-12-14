@@ -62,6 +62,7 @@
             <button 
               @click="addToCart(product)"
               class="w-full bg-champagne hover:bg-gold text-dark py-3 md:py-3.5 rounded-xl md:rounded-2xl font-normal text-sm md:text-base flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-lg hover:shadow-gold/20 hover:scale-105 active:scale-95"
+              :aria-label="`Add ${product.name} to cart`"
             >
               <span>Add to cart</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" viewBox="0 0 20 20" fill="currentColor">

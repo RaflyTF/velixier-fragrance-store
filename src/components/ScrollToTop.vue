@@ -3,7 +3,7 @@
     <button
       v-if="isVisible"
       @click="scrollToTop"
-      class="fixed bottom-6 right-6 z-40 bg-gold hover:bg-champagne text-dark p-3 md:p-4 rounded-full shadow-lg shadow-gold/30 hover:shadow-gold/50 transition-all duration-300 hover:scale-110 group"
+      class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40 bg-gold hover:bg-champagne text-dark p-3 md:p-4 rounded-full shadow-lg shadow-gold/30 hover:shadow-gold/50 transition-all duration-300 hover:scale-110 group"
       aria-label="Scroll to top"
     >
       <i class="fas fa-arrow-up text-base md:text-lg group-hover:translate-y-[-2px] transition-transform duration-300 block"></i>

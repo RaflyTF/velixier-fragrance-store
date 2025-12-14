@@ -1,35 +1,35 @@
 <template>
-  <section class="bg-gradient-to-br from-gold/10 via-dark to-champagne/10 py-16 px-6">
+  <section class="bg-gradient-to-br from-gold/10 via-dark to-champagne/10 py-12 md:py-16 px-4 md:px-6">
     <div class="max-w-4xl mx-auto text-center">
       <!-- Icon -->
-      <div class="inline-flex items-center justify-center w-16 h-16 bg-gold/20 rounded-full mb-6">
-        <i class="fas fa-envelope text-2xl text-gold"></i>
+      <div class="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-gold/20 rounded-full mb-4 md:mb-6">
+        <i class="fas fa-envelope text-xl md:text-2xl text-gold"></i>
       </div>
 
       <!-- Heading -->
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-serif text-gold mb-4">
+      <h2 class="text-2xl md:text-4xl lg:text-5xl font-serif text-gold mb-3 md:mb-4 px-4">
         Join Our Exclusive Club
       </h2>
-      <p class="text-cream/70 text-base md:text-lg mb-8 max-w-2xl mx-auto">
+      <p class="text-cream/70 text-sm md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto px-4">
         Subscribe to our newsletter and get <span class="text-gold font-semibold">10% off</span> on your first purchase. 
         Plus, be the first to know about new arrivals and special offers.
       </p>
 
       <!-- Newsletter Form -->
-      <form @submit.prevent="handleSubscribe" class="max-w-md mx-auto">
+      <form @submit.prevent="handleSubscribe" class="max-w-md mx-auto px-4">
         <div class="relative">
           <input
             v-model="email"
             type="email"
             placeholder="Enter your email address"
             required
-            class="w-full bg-dark-lighter border border-gold/20 rounded-full px-6 py-4 pr-32 text-cream text-sm focus:outline-none focus:border-gold/50 transition-colors"
+            class="w-full bg-dark-lighter border border-gold/20 rounded-full px-4 md:px-6 py-3 md:py-4 pr-28 md:pr-32 text-cream text-sm focus:outline-none focus:border-gold/50 transition-colors"
             :class="{ 'border-red-500': error, 'border-green-500': success }"
           />
           <button
             type="submit"
             :disabled="isSubmitting"
-            class="absolute right-2 top-1/2 -translate-y-1/2 bg-gold hover:bg-champagne text-dark px-6 py-2.5 rounded-full font-medium text-sm transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="absolute right-1.5 md:right-2 top-1/2 -translate-y-1/2 bg-gold hover:bg-champagne text-dark px-4 md:px-6 py-2 md:py-2.5 rounded-full font-medium text-xs md:text-sm transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span v-if="!isSubmitting">Subscribe</span>
             <i v-else class="fas fa-spinner fa-spin"></i>
@@ -46,21 +46,21 @@
       </form>
 
       <!-- Benefits -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-12 max-w-3xl mx-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mt-8 md:mt-12 max-w-3xl mx-auto px-4">
         <div class="flex flex-col items-center">
-          <i class="fas fa-gift text-3xl text-gold mb-3"></i>
-          <h3 class="text-cream font-medium mb-1">Exclusive Offers</h3>
-          <p class="text-cream/60 text-sm">Special deals for members</p>
+          <i class="fas fa-gift text-2xl md:text-3xl text-gold mb-2 md:mb-3"></i>
+          <h3 class="text-cream font-medium mb-1 text-sm md:text-base">Exclusive Offers</h3>
+          <p class="text-cream/60 text-xs md:text-sm">Special deals for members</p>
         </div>
         <div class="flex flex-col items-center">
-          <i class="fas fa-sparkles text-3xl text-gold mb-3"></i>
-          <h3 class="text-cream font-medium mb-1">New Arrivals First</h3>
-          <p class="text-cream/60 text-sm">Early access to products</p>
+          <i class="fas fa-sparkles text-2xl md:text-3xl text-gold mb-2 md:mb-3"></i>
+          <h3 class="text-cream font-medium mb-1 text-sm md:text-base">New Arrivals First</h3>
+          <p class="text-cream/60 text-xs md:text-sm">Early access to products</p>
         </div>
         <div class="flex flex-col items-center">
-          <i class="fas fa-crown text-3xl text-gold mb-3"></i>
-          <h3 class="text-cream font-medium mb-1">VIP Treatment</h3>
-          <p class="text-cream/60 text-sm">Priority customer service</p>
+          <i class="fas fa-crown text-2xl md:text-3xl text-gold mb-2 md:mb-3"></i>
+          <h3 class="text-cream font-medium mb-1 text-sm md:text-base">VIP Treatment</h3>
+          <p class="text-cream/60 text-xs md:text-sm">Priority customer service</p>
         </div>
       </div>
     </div>

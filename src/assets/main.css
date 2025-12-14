@@ -30,6 +30,7 @@
     background-color: #000000;
     color: #ffffff;
     position: relative;
+    scroll-behavior: smooth;
   }
 
   /* Custom Scrollbar */
@@ -39,7 +40,6 @@
 
   .custom-scrollbar::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {

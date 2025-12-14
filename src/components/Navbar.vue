@@ -10,9 +10,9 @@
         <!-- Logo -->
         <router-link 
           to="/" 
-          class="text-xl md:text-2xl font-serif font-normal text-gold tracking-[0.15em] md:tracking-[0.2em] hover:text-champagne transition-all duration-300 hover:scale-105"
+          class="flex items-center gap-2 hover:opacity-80 transition-all duration-300 hover:scale-105"
         >
-          VELIXIER
+          <img src="../assets/logo.svg" alt="Velixier Logo" class="h-8 md:h-10" />
         </router-link>
 
         <!-- Desktop Navigation -->
@@ -31,17 +31,6 @@
 
         <!-- Right Icons -->
         <div class="flex items-center gap-4 md:gap-6">
-          <!-- Theme Toggle with Font Awesome -->
-          <button 
-            @click="handleToggleTheme" 
-            class="text-gold hover:text-champagne transition-all duration-300 hover:scale-110 text-base md:text-lg"
-            :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
-            title="Toggle theme"
-          >
-            <i v-if="isDark" class="fas fa-sun"></i>
-            <i v-else class="fas fa-moon"></i>
-          </button>
-
           <!-- Wishlist with Font Awesome -->
           <router-link
             to="/products"
@@ -109,10 +98,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useCart } from '../stores/cart'
 import { useWishlist } from '../stores/wishlist'
-import { useTheme } from '../stores/theme'
 
 const mobileMenuOpen = ref(false)
 const scrolled = ref(false)
@@ -121,12 +109,6 @@ const cart = useCart()
 const { toggleCart, cartCount } = cart
 const wishlist = useWishlist()
 const { wishlistCount } = wishlist
-const theme = useTheme()
-const isDark = computed(() => theme.isDark)
-
-const handleToggleTheme = () => {
-  theme.toggleTheme()
-}
 
 const navItems = [
   { name: 'Home', path: '/' },
@@ -162,20 +144,34 @@ onUnmounted(() => {
 }
 
 .slide-down-enter-active {
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slide-down-leave-active {
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .slide-down-enter-from {
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translateY(-20px);
+  max-height: 0;
+}
+
+.slide-down-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 500px;
+}
+
+.slide-down-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 500px;
 }
 
 .slide-down-leave-to {
   opacity: 0;
-  transform: translateY(-5px);
+  transform: translateY(-10px);
+  max-height: 0;
 }
 </style>

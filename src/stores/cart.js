@@ -6,7 +6,7 @@ const isCartOpen = ref(false)
 
 // Cart functions
 export function useCart() {
-  const addToCart = (product) => {
+  const addToCart = (product, silent = false) => {
     const existingItem = cartItems.value.find(item => item.id === product.id)
     
     if (existingItem) {
@@ -18,8 +18,10 @@ export function useCart() {
       })
     }
     
-    // Show notification
-    showNotification(`${product.name} added to cart!`)
+    // Show notification only if not silent
+    if (!silent) {
+      showNotification(`${product.name} added to cart!`)
+    }
   }
 
   const removeFromCart = (productId) => {

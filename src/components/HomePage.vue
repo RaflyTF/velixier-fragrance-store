@@ -6,6 +6,7 @@
     <CTABestSellers />
     <CTAPromo />
     <CTATestimoni />
+    <CTANewsletter />
     <Footer />
     
     <!-- Scroll to Top Button -->
@@ -32,6 +33,7 @@ import CTANote from './CTANote.vue'
 import CTABestSellers from './CTABestSellers.vue'
 import CTAPromo from './CTAPromo.vue'
 import CTATestimoni from './CTATestimoni.vue'
+import CTANewsletter from './CTANewsletter.vue'
 import Footer from './Footer.vue'
 
 const showScrollTop = ref(false)

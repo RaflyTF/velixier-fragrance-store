@@ -174,6 +174,32 @@
             <!-- Payment Method -->
             <div class="bg-dark-lighter p-8 rounded-2xl border border-gray-800/30">
               <h2 class="text-2xl font-serif text-gold mb-6">Payment Method</h2>
+              
+              <!-- Accepted Payment Icons -->
+              <div class="mb-6 pb-6 border-b border-gray-800/30">
+                <p class="text-cream/60 text-sm mb-3">We Accept:</p>
+                <div class="flex flex-wrap items-center gap-3">
+                  <div class="bg-white px-3 py-2 rounded-lg" title="Visa">
+                    <span class="text-[#1A1F71] font-bold text-lg">VISA</span>
+                  </div>
+                  <div class="bg-white px-3 py-2 rounded-lg" title="Mastercard">
+                    <span class="text-[#EB001B] font-bold text-lg">MC</span>
+                  </div>
+                  <div class="bg-[#00ADE6] px-3 py-2 rounded-lg" title="GoPay">
+                    <span class="text-white font-bold text-sm">GoPay</span>
+                  </div>
+                  <div class="bg-[#4C3494] px-3 py-2 rounded-lg" title="OVO">
+                    <span class="text-white font-bold text-sm">OVO</span>
+                  </div>
+                  <div class="bg-[#118EEA] px-3 py-2 rounded-lg" title="DANA">
+                    <span class="text-white font-bold text-sm">DANA</span>
+                  </div>
+                  <div class="bg-[#FF5722] px-3 py-2 rounded-lg" title="ShopeePay">
+                    <span class="text-white font-bold text-xs">ShopeePay</span>
+                  </div>
+                </div>
+              </div>
+
               <div class="space-y-3">
                 <label 
                   v-for="method in paymentMethods" 

@@ -153,20 +153,46 @@
         </div>
 
         <!-- Results Count -->
-        <div class="mb-6 text-cream/60 text-sm">
+        <div v-if="!isLoading" class="mb-6 text-cream/60 text-sm">
           Showing {{ filteredProducts.length }} of {{ allProducts.length }} products
         </div>
 
+        <!-- Loading Skeleton -->
+        <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          <div 
+            v-for="i in 6" 
+            :key="i"
+            class="bg-dark-lighter rounded-2xl md:rounded-3xl overflow-hidden border border-gray-800/30 animate-pulse"
+          >
+            <div class="h-64 sm:h-72 md:h-80 bg-dark"></div>
+            <div class="p-4 sm:p-5 md:p-6 space-y-3">
+              <div class="h-4 bg-dark rounded w-3/4"></div>
+              <div class="h-6 bg-dark rounded w-1/2"></div>
+              <div class="flex gap-2">
+                <div class="h-8 bg-dark rounded flex-1"></div>
+                <div class="h-8 bg-dark rounded w-12"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Product Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           <div 
             v-for="product in filteredProducts" 
             :key="product.id"
             class="bg-dark-lighter rounded-2xl md:rounded-3xl overflow-hidden border border-gray-800/30 hover:border-gold/30 transition-all duration-300 group relative"
           >
             <!-- Badge -->
-            <div class="absolute top-3 left-3 md:top-4 md:left-4 z-10 bg-gold text-dark px-3 py-1 md:px-4 md:py-1.5 rounded-full text-xs font-medium">
-              {{ product.badge }}
+            <div class="absolute top-3 left-3 md:top-4 md:left-4 z-10 flex flex-col gap-2">
+              <!-- Sale Badge (if applicable) -->
+              <div v-if="product.discount" class="bg-red-500 text-white px-3 py-1 md:px-4 md:py-1.5 rounded-full text-xs font-bold">
+                -{{ product.discount }}%
+              </div>
+              <!-- Regular Badge -->
+              <div class="bg-gold text-dark px-3 py-1 md:px-4 md:py-1.5 rounded-full text-xs font-medium">
+                {{ product.badge }}
+              </div>
             </div>
 
             <!-- Stock Badge -->
@@ -221,7 +247,15 @@
               </div>
               
               <p class="text-cream/70 text-xs sm:text-sm mb-3 md:mb-4 line-clamp-2">{{ product.description }}</p>
-              <p class="text-lg sm:text-xl font-normal text-cream mb-3 md:mb-4">{{ product.price }}</p>
+              
+              <!-- Price with Discount -->
+              <div class="mb-3 md:mb-4">
+                <div v-if="product.discount" class="flex items-center gap-2">
+                  <span class="text-cream/50 line-through text-sm">{{ product.price }}</span>
+                  <span class="text-lg sm:text-xl font-normal text-gold">{{ product.discountPrice }}</span>
+                </div>
+                <p v-else class="text-lg sm:text-xl font-normal text-cream">{{ product.price }}</p>
+              </div>
               
               <div class="flex gap-2">
                 <button 
@@ -366,6 +400,7 @@ const quickViewProduct = ref(null)
 const imageLoaded = ref({})
 const priceRange = ref({ min: null, max: null })
 const openDropdown = ref(null)
+const isLoading = ref(true)
 
 // Dropdown options
 const categoryOptions = [
@@ -426,6 +461,11 @@ const selectSort = (value) => {
 
 // Close dropdown when clicking outside
 onMounted(() => {
+  // Simulate loading
+  setTimeout(() => {
+    isLoading.value = false
+  }, 800)
+  
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.relative')) {
       openDropdown.value = null
@@ -467,7 +507,9 @@ const allProducts = [
     reviews: 289,
     badge: 'Popular',
     category: 'men',
-    stock: 'in-stock'
+    stock: 'in-stock',
+    discount: 20,
+    discountPrice: 'Rp. 600.000'
   },
   {
     id: 3,
@@ -480,7 +522,9 @@ const allProducts = [
     reviews: 156,
     badge: 'Trending',
     category: 'unisex',
-    stock: 'limited'
+    stock: 'limited',
+    discount: 15,
+    discountPrice: 'Rp. 1.062.500'
   },
   {
     id: 4,

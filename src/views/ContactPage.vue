@@ -237,22 +237,7 @@
 
     <Footer />
 
-    <!-- Floating Chat Button -->
-    <Transition name="scale">
-      <button 
-        v-if="showChatButton"
-        @click="openChat"
-        class="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-br from-gold to-champagne text-dark rounded-full shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center group z-50"
-        title="Chat with us"
-      >
-        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-        </svg>
-        <span class="absolute -top-12 right-0 bg-dark-lighter text-cream px-4 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-          Chat with us
-        </span>
-      </button>
-    </Transition>
+
   </div>
 </template>
 
@@ -275,7 +260,6 @@ const errors = ref({})
 const isSubmitting = ref(false)
 const successMessage = ref('')
 const openFaqIndex = ref(null)
-const showChatButton = ref(false)
 
 // Business Hours
 const businessHours = {
@@ -411,19 +395,6 @@ const handleSubmit = async () => {
 const toggleFaq = (index) => {
   openFaqIndex.value = openFaqIndex.value === index ? null : index
 }
-
-// Chat button
-const openChat = () => {
-  showNotification('Live chat will be available soon!')
-  // In production, this would open a chat widget
-}
-
-onMounted(() => {
-  // Show chat button after delay
-  setTimeout(() => {
-    showChatButton.value = true
-  }, 2000)
-})
 </script>
 
 <style scoped>

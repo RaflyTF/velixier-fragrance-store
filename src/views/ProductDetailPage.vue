@@ -7,11 +7,30 @@
         <!-- Back Button -->
         <button 
           @click="$router.back()"
-          class="mb-6 md:mb-8 flex items-center gap-2 text-gold hover:text-champagne transition-colors text-sm md:text-base"
+          class="mb-4 flex items-center gap-2 text-gold hover:text-champagne transition-colors text-sm md:text-base"
         >
           <i class="fas fa-arrow-left"></i>
           <span>Back to Products</span>
         </button>
+
+        <!-- Breadcrumbs -->
+        <nav class="mb-6 md:mb-8" aria-label="Breadcrumb">
+          <ol class="flex items-center gap-2 text-xs md:text-sm text-cream/60">
+            <li>
+              <router-link to="/" class="hover:text-gold transition-colors">
+                <i class="fas fa-home mr-1"></i>Home
+              </router-link>
+            </li>
+            <li><i class="fas fa-chevron-right text-xs"></i></li>
+            <li>
+              <router-link to="/products" class="hover:text-gold transition-colors">Products</router-link>
+            </li>
+            <li v-if="product && product !== 'not-found'"><i class="fas fa-chevron-right text-xs"></i></li>
+            <li v-if="product && product !== 'not-found'" class="text-gold font-medium truncate max-w-[200px]" :title="product.name">
+              {{ product.name }}
+            </li>
+          </ol>
+        </nav>
 
         <!-- Loading State -->
         <div v-if="!product" class="text-center py-20">
@@ -55,12 +74,19 @@
             </div>
 
             <!-- Main Image with Fixed Height -->
-            <div class="relative bg-black rounded-xl overflow-hidden" style="height: 400px; max-height: 400px;">
+            <div 
+              class="relative bg-black rounded-xl overflow-hidden cursor-zoom-in group" 
+              style="height: 400px; max-height: 400px;"
+              @click="showZoomModal = true"
+            >
               <img 
                 :src="selectedImage" 
                 :alt="product.name"
-                class="w-full h-full object-contain transition-all duration-300"
+                class="w-full h-full object-contain transition-all duration-300 group-hover:scale-105"
               />
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                <i class="fas fa-search-plus text-3xl text-white/0 group-hover:text-white/80 transition-all duration-300"></i>
+              </div>
             </div>
           </div>
 
@@ -212,6 +238,57 @@
           </div>
         </div>
 
+        <!-- Customer Reviews -->
+        <div v-if="product && product !== 'not-found'" class="mt-12 md:mt-16">
+          <div class="bg-dark-lighter p-6 md:p-8 rounded-2xl border border-gray-800/30">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-2xl md:text-3xl font-serif text-gold flex items-center gap-2">
+                <i class="fas fa-comments"></i>
+                Customer Reviews
+              </h3>
+              <div class="flex items-center gap-2">
+                <div class="flex">
+                  <i v-for="i in 5" :key="i" class="fas fa-star text-gold text-sm"></i>
+                </div>
+                <span class="text-cream/70 text-sm">{{ product.rating }}.0 ({{ product.reviews }} reviews)</span>
+              </div>
+            </div>
+
+            <!-- Reviews List -->
+            <div class="space-y-4">
+              <div 
+                v-for="(review, index) in customerReviews" 
+                :key="index"
+                class="bg-dark p-4 md:p-6 rounded-xl border border-gray-800/30"
+              >
+                <div class="flex items-start justify-between mb-3">
+                  <div class="flex items-center gap-3">
+                    <!-- Avatar -->
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-gold to-champagne flex items-center justify-center text-dark font-bold">
+                      {{ review.initials }}
+                    </div>
+                    <div>
+                      <p class="text-cream font-medium">{{ review.name }}</p>
+                      <p class="text-cream/50 text-xs">{{ review.date }}</p>
+                    </div>
+                  </div>
+                  <!-- Rating Stars -->
+                  <div class="flex">
+                    <i v-for="i in 5" :key="i" class="fas fa-star text-sm" :class="i <= review.rating ? 'text-gold' : 'text-gray-600'"></i>
+                  </div>
+                </div>
+                <p class="text-cream/80 text-sm leading-relaxed">{{ review.comment }}</p>
+                
+                <!-- Verified Purchase Badge -->
+                <div v-if="review.verified" class="mt-3 inline-flex items-center gap-1 text-green-400 text-xs">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Verified Purchase</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Related Products -->
         <div v-if="product && product !== 'not-found'" class="mt-12 md:mt-16 lg:mt-20">
           <h2 class="text-2xl md:text-3xl font-serif text-gold mb-6 md:mb-8 text-center flex items-center justify-center gap-2 md:gap-3">
@@ -248,6 +325,47 @@
       </div>
     </main>
 
+    <!-- Image Zoom Modal -->
+    <Teleport to="body">
+      <Transition name="fade">
+        <div 
+          v-if="showZoomModal && product && product !== 'not-found'"
+          @click="showZoomModal = false"
+          class="fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4 cursor-zoom-out"
+        >
+          <button 
+            @click="showZoomModal = false"
+            class="absolute top-6 right-6 text-white/80 hover:text-white text-3xl z-10 transition-colors"
+            aria-label="Close zoom"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+          
+          <div class="max-w-6xl max-h-[90vh] w-full h-full flex items-center justify-center">
+            <img 
+              :src="selectedImage" 
+              :alt="product.name"
+              class="max-w-full max-h-full object-contain"
+              @click.stop
+            />
+          </div>
+
+          <!-- Image Navigation in Zoom -->
+          <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3">
+            <div 
+              v-for="(img, index) in product.images" 
+              :key="index"
+              @click.stop="selectedImage = img"
+              class="w-16 h-16 bg-dark-lighter rounded-lg border-2 transition-all cursor-pointer overflow-hidden"
+              :class="selectedImage === img ? 'border-gold ring-2 ring-gold/50 scale-110' : 'border-white/20 hover:border-white/50'"
+            >
+              <img :src="img" :alt="`${product.name} view ${index + 1}`" class="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
+
     <Footer />
   </div>
 </template>
@@ -283,6 +401,43 @@ const { isInWishlist, toggleWishlist } = useWishlist()
 const quantity = ref(1)
 const product = ref(null)
 const selectedImage = ref(null)
+const showZoomModal = ref(false)
+
+// Customer Reviews (sample data)
+const customerReviews = [
+  {
+    name: 'Amanda Rodriguez',
+    initials: 'AR',
+    date: 'December 8, 2025',
+    rating: 5,
+    comment: 'Absolutely love this fragrance! The scent is sophisticated and lasts all day. Perfect for both work and evening events. Highly recommend!',
+    verified: true
+  },
+  {
+    name: 'Michael Chen',
+    initials: 'MC',
+    date: 'December 5, 2025',
+    rating: 5,
+    comment: 'Best perfume I\'ve ever purchased. The quality is outstanding and the packaging is luxurious. Worth every penny!',
+    verified: true
+  },
+  {
+    name: 'Sarah Thompson',
+    initials: 'ST',
+    date: 'November 28, 2025',
+    rating: 4,
+    comment: 'Beautiful scent with excellent longevity. The only reason I\'m giving 4 stars instead of 5 is the price point, but the quality justifies it.',
+    verified: true
+  },
+  {
+    name: 'David Park',
+    initials: 'DP',
+    date: 'November 20, 2025',
+    rating: 5,
+    comment: 'This has become my signature scent. I receive compliments every time I wear it. Fast shipping and great customer service too!',
+    verified: true
+  }
+]
 
 const handleToggleWishlist = () => {
   if (product.value && product.value !== 'not-found') {
@@ -504,8 +659,9 @@ const decreaseQuantity = () => {
 // Add to cart with quantity
 const handleAddToCart = () => {
   for (let i = 0; i < quantity.value; i++) {
-    addToCart(product.value)
+    addToCart(product.value, true) // Silent mode - no individual notifications
   }
+  // Show single notification with total quantity
   showNotification(`Added ${quantity.value}x ${product.value.name} to cart!`, 'success')
   quantity.value = 1 // Reset quantity
 }

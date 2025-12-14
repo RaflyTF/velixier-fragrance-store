@@ -17,6 +17,8 @@
     </router-view>
     <CartSidebar />
     <NotificationToast />
+    <ScrollToTop />
+    <WhatsAppButton />
   </div>
 </template>
 
@@ -26,6 +28,8 @@ import { useRouter } from 'vue-router'
 import CartSidebar from './components/CartSidebar.vue'
 import NotificationToast from './components/NotificationToast.vue'
 import LoadingSpinner from './components/LoadingSpinner.vue'
+import ScrollToTop from './components/ScrollToTop.vue'
+import WhatsAppButton from './components/WhatsAppButton.vue'
 
 const router = useRouter()
 const isLoading = ref(false)
